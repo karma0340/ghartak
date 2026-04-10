@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-start: #ff4b1f;
+  --color-brand-end: #ff9068;
+  --color-brand-orange: #FF6B6B;
+  --color-brand-red: #FF4757;
+  --color-brand-pink: #FF70A6;
+  --color-brand-coral: #FF9F43;
+  --color-brand-yellow: #FECA57;
+  --color-brand-light: #FFF5F5;
+
+  --font-sans: 'Outfit', sans-serif;
+  --font-display: 'Fredoka', sans-serif;
+
+  --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 20px rgba(255, 107, 107, 0.5);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-fade-in: fadeIn 0.5s ease-out forwards;
+  --animate-slide-up: slideUp 0.5s ease-out forwards;
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-brand-light text-gray-800 antialiased overflow-x-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold tracking-tight;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-brand-orange/30 rounded-full hover:bg-brand-orange/50 transition-colors;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-soft;
+}
+
+.glass-heavy {
+  @apply bg-white/90 backdrop-blur-lg border border-white/50 shadow-lg;
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-sm border border-white/60 shadow-md hover:shadow-xl transition-all duration-300;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar utility (for horizontal scroll rows) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Better tap targets on mobile */
+@media (max-width: 768px) {
+  button, a { min-height: 44px; }
+  input, select, textarea { font-size: 16px; } /* Prevent iOS zoom on focus */
+}
+
+/* Smooth safe-area insets for notched phones */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 16px); }

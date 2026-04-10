@@ -1,0 +1,62 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String // In a real app we'd hash it, here we keep it simple or hash later
+  orders    Order[]
+  rides     Ride[]
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  image       String?
+  category    String   // "FOOD" or "GROCERY"
+  restaurant  String?  // For Food
+  rating      Float?
+  time        String?  // e.g., "15-20 min"
+  OrderItem   OrderItem[]
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  total     Float
+  status    String      @default("PENDING") // PENDING, COMPLETED, CANCELLED
+  items     OrderItem[]
+  createdAt DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+model Ride {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  pickup      String
+  destination String
+  driver      String?
+  status      String   @default("PENDING") // PENDING, ACCEPTED, COMPLETED, CANCELLED
+  price       Float
+  createdAt   DateTime @default(now())
+}
