@@ -21,8 +21,8 @@ export const AdminDashboard = () => {
     const fetchData = async () => {
         try {
             const [statsRes, appsRes] = await Promise.all([
-                fetch('/api/admin/stats'),
-                fetch('/api/admin/drivers')
+                fetch((import.meta.env.VITE_API_URL || "") + '/api/admin/stats'),
+                fetch((import.meta.env.VITE_API_URL || "") + '/api/admin/drivers')
             ]);
             setStats(await statsRes.json());
             setApplications(await appsRes.json());
@@ -34,7 +34,7 @@ export const AdminDashboard = () => {
 
     const handleStatusUpdate = async (profileId, status) => {
         try {
-            const res = await fetch('/api/admin/drivers/status', {
+            const res = await fetch((import.meta.env.VITE_API_URL || "") + '/api/admin/drivers/status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ profileId, status })

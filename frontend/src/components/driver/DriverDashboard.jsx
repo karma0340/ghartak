@@ -83,7 +83,7 @@ export const DriverDashboard = () => {
                 if (pos.coords.heading) setBearing(pos.coords.heading);
                 // Sync with backend natively
                 if (user?.id) {
-                    fetch('/api/drivers/location', {
+                    fetch((import.meta.env.VITE_API_URL || "") + '/api/drivers/location', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ userId: user.id, ...newLoc })

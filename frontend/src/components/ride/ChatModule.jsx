@@ -19,7 +19,7 @@ export const ChatModule = ({ ride, user, isOpen, onClose }) => {
         const fetchMessages = async () => {
             try {
                 if (!ride?._id) return;
-                const res = await fetch(`/api/rides/${ride._id}/chat`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/rides/${ride._id}/chat`);
                 if (res.ok) {
                     const data = await res.json();
                     setMessages(data);
@@ -44,7 +44,7 @@ export const ChatModule = ({ ride, user, isOpen, onClose }) => {
         if (!inputText.trim()) return;
         
         try {
-            const res = await fetch(`/api/rides/${ride._id}/chat`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/rides/${ride._id}/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sender: user.id, text: inputText })

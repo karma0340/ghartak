@@ -19,7 +19,7 @@ export const DriverRegistration = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/drivers/apply', {
+            const res = await fetch((import.meta.env.VITE_API_URL || "") + '/api/drivers/apply', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: user.id, ...formData })

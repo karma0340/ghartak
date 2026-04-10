@@ -21,7 +21,7 @@ export const FoodPage = () => {
     const [restaurants, setRestaurants] = React.useState([]);
 
     React.useEffect(() => {
-        fetch('/api/products?category=FOOD')
+        fetch((import.meta.env.VITE_API_URL || "") + '/api/products?category=FOOD')
             .then(res => res.json())
             .then(data => setRestaurants(data))
             .catch(err => console.error(err));

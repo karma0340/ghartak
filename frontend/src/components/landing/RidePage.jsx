@@ -348,7 +348,7 @@ export const RidePage = () => {
             if (['ACCEPTED', 'ARRIVING', 'IN_PROGRESS'].includes(activeRide.status)) {
                 if (activeRide.driver) {
                     try {
-                        const dRes = await fetch(`/api/drivers/profile/${activeRide.driver._id || activeRide.driver}`);
+                        const dRes = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/drivers/profile/${activeRide.driver._id || activeRide.driver}`);
                         if (dRes.ok) {
                             const dData = await dRes.json();
                             setDriverProfile(dData);
@@ -388,7 +388,7 @@ export const RidePage = () => {
     const handleConfirm = async () => {
         if (!pickup || !destination) return setStatus({ type: 'error', message: 'Set locations first' });
         setStatus({ type: 'loading', message: 'Booking...' });
-        const res = await fetch('/api/rides', {
+        const res = await fetch((import.meta.env.VITE_API_URL || "") + '/api/rides', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -402,7 +402,7 @@ export const RidePage = () => {
     };
 
     const handleBoostPrice = async (amount) => {
-        const res = await fetch('/api/rides/price', {
+        const res = await fetch((import.meta.env.VITE_API_URL || "") + '/api/rides/price', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ rideId: activeRide._id, price: activeRide.price + amount })

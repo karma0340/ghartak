@@ -20,7 +20,7 @@ export const GroceryPage = () => {
     const [itemWithCat, setItemWithCat] = React.useState([]);
 
     React.useEffect(() => {
-        fetch('/api/products?category=GROCERY')
+        fetch((import.meta.env.VITE_API_URL || "") + '/api/products?category=GROCERY')
             .then(res => res.json())
             .then(data => {
                 const mapped = data.map(item => {

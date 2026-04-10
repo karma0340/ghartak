@@ -27,7 +27,7 @@ export const LiveRideProvider = ({ children }) => {
         if (user.role === 'driver') {
             const initDriver = async () => {
                 try {
-                    const res = await fetch(`/api/drivers/profile/${user.id}`);
+                    const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/drivers/profile/${user.id}`);
                     if (res.ok) {
                         const data = await res.json();
                         if (data && data._id) {
@@ -62,12 +62,12 @@ export const LiveRideProvider = ({ children }) => {
                 let activeData = null;
 
                 if (activeRideRef.current?._id) {
-                    const statusRes = await fetch(`/api/rides/${activeRideRef.current._id}`);
+                    const statusRes = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/rides/${activeRideRef.current._id}`);
                     if (statusRes.ok) {
                         activeData = await statusRes.json();
                     }
                 } else {
-                    const actRes = await fetch(`/api/rides/active?userId=${user.id}&role=${role}`);
+                    const actRes = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/rides/active?userId=${user.id}&role=${role}`);
                     if (actRes.ok) {
                         activeData = await actRes.json();
                     }
@@ -94,7 +94,7 @@ export const LiveRideProvider = ({ children }) => {
                     setActiveRide(prev => {
                         if (!prev) {
                             // No active ride → fetch nearby
-                            fetch('/api/rides/nearby').then(r => r.ok ? r.json() : []).then(data => {
+                            fetch((import.meta.env.VITE_API_URL || "") + '/api/rides/nearby').then(r => r.ok ? r.json() : []).then(data => {
                                 setNearbyRides(d => JSON.stringify(d) !== JSON.stringify(data) ? data : d);
                             });
                         }
@@ -117,7 +117,7 @@ export const LiveRideProvider = ({ children }) => {
             const bodyPayload = { rideId, status: newStatus };
             if (otpInput) bodyPayload.otp = otpInput;
 
-            const res = await fetch('/api/rides/status', {
+            const res = await fetch((import.meta.env.VITE_API_URL || "") + '/api/rides/status', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bodyPayload)
@@ -143,7 +143,7 @@ export const LiveRideProvider = ({ children }) => {
     // ── Accept a ride request (driver) ────────────────────────────────────────
     const acceptRideRequest = async (ride) => {
         try {
-            const res = await fetch('/api/rides/accept', {
+            const res = await fetch((import.meta.env.VITE_API_URL || "") + '/api/rides/accept', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ rideId: ride._id, driverId: user.id })
@@ -163,7 +163,7 @@ export const LiveRideProvider = ({ children }) => {
     // ── Cancel a ride (user or driver) ────────────────────────────────────────
     const cancelRideRequest = async (rideId, reason) => {
         try {
-            const res = await fetch('/api/rides/cancel', {
+            const res = await fetch((import.meta.env.VITE_API_URL || "") + '/api/rides/cancel', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ rideId, cancelReason: reason })
@@ -185,7 +185,7 @@ export const LiveRideProvider = ({ children }) => {
         setIsOnline(newStatus);
         if (driverProfile) {
             try {
-                await fetch('/api/drivers/status', {
+                await fetch((import.meta.env.VITE_API_URL || "") + '/api/drivers/status', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ userId: user.id, isOnline: newStatus, location })
